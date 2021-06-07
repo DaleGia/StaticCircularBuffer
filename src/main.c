@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include "fifoStaticCircularBuffer.h"
-struct FIFOCircularBuffer circularBuffer;
+FIFOBuffer circularBuffer;
 int buffer[100];
 
 int main()
 {
-	FIFOCircularBuffer_init(&circularBuffer, buffer, sizeof(buffer));
+	FIFOBuffer_init(&circularBuffer, buffer, sizeof(int),git  sizeof(buffer));
 	return (0);
 }

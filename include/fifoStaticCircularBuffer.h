@@ -16,6 +16,7 @@
 /*****************************************************************************/
 /*INLCUDES                                                                   */
 /*****************************************************************************/
+#include "stdint.h"
 
 /*****************************************************************************/
 /*PUBLIC MACROS                                                              */
@@ -33,28 +34,18 @@
 *
 * @return none
 */
-struct FIFOCircularBuffer
+typedef struct 
 {  
-  void (*enqueue)(void* data);
-  unsigned short (*dequeue)(void* buffer);
-  unsigned short (*enqueueIfNotFull)(void* data);
-  unsigned short (*isEmpty)(void);
-  unsigned short (*isFull)(void);
-  void (*setEmptyCallback)(void (*callbackFunction)(void));
-  void (*setFullCallback)(void (*callbackFunction)(void));
-  void (*reset)(void);
-  unsigned int (*size)(void);
-  unsigned int (*capacity)(void);
-
   void* _buffer;
-  unsigned int _bufferSize;
-  unsigned int _head;
-  unsigned int _tail;
-  unsigned short _fullFlag;
-  unsigned short _emptyFlag;
-  void (*_emptyCallbackFunction)(void);
-  void (*_fullCallbackFunction)(void);
-};
+  uint32_t _dataSize;
+  uint32_t _bufferSize;
+  uint32_t _head;
+  uint32_t _tail;
+  uint8_t _fullFlag;
+  uint8_t _emptyFlag;
+  void (*_emptyCallbackFunction)(void* bufferInstance);
+  void (*_fullCallbackFunction)(void* bufferInstance);
+} FIFOBuffer;
 
 /*****************************************************************************/
 /*PUBLIC Data                                                                */
@@ -69,9 +60,93 @@ struct FIFOCircularBuffer
  * @param   
  * @return
  */
-void FIFOCircularBuffer_init(
-  struct FIFOCircularBuffer *instance, 
+void FIFOBuffer_init(
+  FIFOBuffer *instance, 
   void* buffer, 
+  uint32_t dataSize,
   unsigned int bufferSize);
+
+/**
+ * @brief 
+ * 
+ * @param   
+ * @return
+ */
+uint8_t FIFOCircularBuffer_enqueue(void* data);
+
+/**
+ * @brief 
+ * 
+ * @param   
+ * @return
+ */
+uint8_t FIFOCircularBuffer_dequeue(void* buffer);
+
+/**
+ * @brief 
+ * 
+ * @param   
+ * @return
+ */
+uint8_t FIFOCircularBuffer_enqueueIfNotFull(void* data);
+
+/**
+ * @brief 
+ * 
+ * @param   
+ * @return
+ */
+uint8_t FIFOBuffer_isEmpty(FIFOBuffer *instance);
+
+/**
+ * @brief 
+ * 
+ * @param   
+ * @return
+ */
+uint8_t FIFOBuffer_isFull(FIFOBuffer *instance);
+
+/**
+ * @brief 
+ * 
+ * @param   
+ * @return
+ */
+void FIFOBuffer_setEmptyCallback(
+  FIFOBuffer *instance, 
+  void (*callbackFunction)(void*));
+/**
+ * @brief 
+ * 
+ * @param   
+ * @return
+ */
+void FIFOBuffer_setFullCallback(
+  FIFOBuffer *instance, 
+  void (*callbackFunction)(void*));
+
+/**
+ * @brief 
+ * 
+ * @param   
+ * @return
+ */
+void FIFOCircularBuffer_reset(FIFOBuffer *instance);
+
+/**
+ * @brief 
+ * 
+ * @param   
+ * @return
+ */
+uint32_t FIFOCircularBuffer_size(FIFOBuffer *instance);
+
+/**
+ * @brief 
+ * 
+ * @param   
+ * @return
+ */
+uint32_t FIFOCircularBuffer_capacity(FIFOBuffer *instance);
 
 #endif /*FIFOSTATICCIRCULARBUFFER_H_*/
